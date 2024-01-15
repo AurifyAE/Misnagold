@@ -1,1 +1,1 @@
-https://tecnavis.github.io/Aurify-Dashboard/
+https://aurifyae.github.io/Misnagold/
