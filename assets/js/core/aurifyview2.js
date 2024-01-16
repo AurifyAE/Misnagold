@@ -15,7 +15,7 @@ setInterval(() => {
 showTable();
 
 
-let askSpread, bidSpread, goldValue, silverBidSpread, silverAskSpread, goldBuy, goldSell, silverBuy, silverSell;
+let askSpread, bidSpread, goldValue, silverBidSpread, silverAskSpread, goldBuy, goldSell, silverBuy, silverSell, silverValue;
 
 // Gold API KEY
 const API_KEY = 'goldapi-fbqpmirloto20zi-io'
@@ -52,6 +52,9 @@ async function fetchData() {
 
         var GoldUSDResult = (goldValueUSD / 31.1035).toFixed(4);
         goldValue = (GoldUSDResult * 3.67).toFixed(4);
+
+        var silverUSDResult = (silverValueUSD / 31.1035).toFixed(4)
+        silverValue = parseFloat(silverUSDResult * 3.67).toFixed(4)
 
         var goldLowValue = parseFloat(resultGold.low_price);
         var goldHighValue = parseFloat(resultGold.high_price);
@@ -296,6 +299,15 @@ async function showTable() {
         const tableBody = document.getElementById('tableBodyTV');
         console.log(tableData);
 
+        setInterval(() => {
+            var silver = silverValue
+
+            // Silver 1GM Table Value
+            document.getElementById('silverBidTd').textContent = parseFloat(parseFloat(silver) + parseFloat(silverBidSpread) || 0).toFixed(3);
+            document.getElementById('silverAskTd').textContent = parseFloat(parseFloat(silver) + 0.5 + parseFloat(silverAskSpread) || 0).toFixed(3);
+            //console.log(parseFloat(silver));
+        }, 1000);
+
         // Loop through the tableData
         for (const data of tableData) {
             // Assign values from data to variables
@@ -312,7 +324,7 @@ async function showTable() {
             // Create a new table row
             const newRow = document.createElement("tr");
             newRow.innerHTML = `
-            <td style="text-align: right;">${metalInput}</td>
+            <td style="text-align: right;" id="metalInput">Gold</td>
             <td style="text-align: left; font-size:28px; font-weight: 600;">${purityInput}</td>
             <td>${unitInput} ${weightInput}</td>
             <td id="buyAED">0</td>
@@ -341,6 +353,7 @@ async function showTable() {
                 } else if (weight === "OZ") {
                     unitMultiplier = 31.1034768;
                 }
+
 
                 let sellPremium = sellPremiumInputAED || 0;
                 let buyPremium = buyPremiumInputAED || 0;
