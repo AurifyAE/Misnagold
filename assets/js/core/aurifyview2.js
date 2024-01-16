@@ -303,8 +303,8 @@ async function showTable() {
             var silver = silverValue
 
             // Silver 1GM Table Value
-            document.getElementById('silverBidTd').textContent = parseFloat(parseFloat(silver) + parseFloat(silverBidSpread) || 0).toFixed(3);
-            document.getElementById('silverAskTd').textContent = parseFloat(parseFloat(silver) + 0.5 + parseFloat(silverAskSpread) || 0).toFixed(3);
+            document.getElementById('silverBidTd').textContent = parseFloat((parseFloat(silver) + parseFloat(silverBidSpread) || 0)  * 1000).toFixed(3);
+            document.getElementById('silverAskTd').textContent = parseFloat((parseFloat(silver) + 0.5 + parseFloat(silverAskSpread) || 0) * 1000).toFixed(3);
             //console.log(parseFloat(silver));
         }, 1000);
 
