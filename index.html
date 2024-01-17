@@ -121,7 +121,7 @@
       font-weight: bold;
     }
 
-    .silver-table td{
+    .silver-table td {
       font-size: 1.8vw;
     }
 
@@ -488,7 +488,7 @@
       </div>
     </div>
 
-    
+
 
   </div>
 
@@ -547,37 +547,49 @@
 
   <script>
     function startTime() {
-      var today = new Date();
-      var hr = today.getHours();
-      var min = today.getMinutes();
-      var sec = today.getSeconds();
-      ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
-      hr = (hr == 0) ? 12 : hr;
-      hr = (hr > 12) ? hr - 12 : hr;
-      //Add a zero in front of numbers<10
-      hr = checkTime(hr);
-      min = checkTime(min);
-      sec = checkTime(sec);
-      document.getElementById("clock").innerHTML = hr + ":" + min + ":" + sec + " " + ap;
+      function updateTime() { 
+        var today = new Date();
+        var hr = today.getHours();
+        var min = today.getMinutes();
+        var sec = today.getSeconds();
+        var ap = (hr < 12) ? "<span>AM</span>" : "<span>PM</span>";
+        hr = (hr == 0) ? 12 : hr;
+        hr = (hr > 12) ? hr - 12 : hr;
+        // Add a zero in front of numbers < 10
+        hr = checkTime(hr);
+        min = checkTime(min);
+        sec = checkTime(sec);
+        document.getElementById("clock").innerHTML = hr + ":" + min + ":" + sec + " " + ap;
 
-      var months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
-      var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-      var curWeekDay = days[today.getDay()];
-      var curDay = today.getDate();
-      var curMonth = months[today.getMonth()];
-      var curYear = today.getFullYear();
-      var date = curWeekDay + ", " + curDay + " " + curMonth + " " + curYear;
-      document.getElementById("date").innerHTML = date;
-
-      var time = setTimeout(function () { startTime() }, 500);
-    }
-    function checkTime(i) {
-      if (i < 10) {
-        i = "0" + i;
+        var months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
+        var days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+        var curWeekDay = days[today.getDay()];
+        var curDay = today.getDate();
+        var curMonth = months[today.getMonth()];
+        var curYear = today.getFullYear();
+        var date = curWeekDay + ", " + curDay + " " + curMonth + " " + curYear;
+        document.getElementById("date").innerHTML = date;
       }
-      return i;
+
+      // Call updateTime immediately to set the initial values
+      updateTime();
+
+      // Update every second using setInterval
+      var intervalId = setInterval(updateTime, 1000);
+
+      // Optional: If you want to stop the interval after a specific duration (e.g., 30 minutes)
+      // Uncomment the following lines:
+      // setTimeout(function() {
+      //   clearInterval(intervalId);
+      // }, 30 * 60 * 1000);
     }
+
+    function checkTime(i) {
+      return (i < 10) ? "0" + i : i;
+    }
+
     startTime();
+
   </script>
 
   <script>
