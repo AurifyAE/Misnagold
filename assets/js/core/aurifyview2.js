@@ -4,9 +4,7 @@ import { app } from '../../../config/db.js';
 
 const firestore = getFirestore(app)
 
-setInterval(() => {
-    fetchData()
-}, 1000)
+setInterval(fetchData, 500);
 
 // setInterval(() => {
 //     blinker()
@@ -372,7 +370,7 @@ async function showTable() {
                     newRow.querySelector("#sellAED").innerText = parseInt(sellAEDValue).toFixed(0); // Round to remove decimals
                     newRow.querySelector("#buyAED").innerText = parseInt(buyAEDValue).toFixed(0);   // Round to remove decimals
                 }
-            }, 1000)
+            }, 500)
         }
     } catch (error) {
         console.error('Error reading data:', error);
