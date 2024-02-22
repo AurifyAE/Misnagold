@@ -14,7 +14,7 @@ fetchData()
 showTable(); 
 
 
-let askSpread, bidSpread, goldValue, silverBidSpread, silverAskSpread, goldBuy, goldSell, silverBuy, silverSell, silverValue;
+let askSpread, bidSpread, goldValue, silverBidSpread, silverAskSpread, goldBuy, goldSell, silverBuy, silverSell, silverValue, goldValueUSD;
 
 // Gold API KEY
 const API_KEY = 'goldapi-fbqpmirloto20zi-io'
@@ -130,11 +130,11 @@ async function fetchData1() {
         // var goldValueUSD = parseFloat(resultGold.price);
         var silverValueUSD = parseFloat(resultSilver.price)
 
-        document.getElementById('goldRate').textContent = '$' + goldValue.toFixed(2);
-        document.getElementById('silverRate').textContent = '$' + silverValueUSD.toFixed(3);
+        document.getElementById('goldRate').textContent = '$' + goldValueUSD.toFixed(2);
+        document.getElementById('silverRate').textContent = '$' + silverValueUSD.toFixed(3)
 
-        // var GoldUSDResult = (goldValueUSD / 31.1035).toFixed(4);
-        // goldValue = (GoldUSDResult * 3.67).toFixed(4);
+        var GoldUSDResult = (goldValueUSD / 31.1035).toFixed(4);
+        goldValue = (GoldUSDResult * 3.67).toFixed(4);
 
         var silverUSDResult = (silverValueUSD / 31.1035).toFixed(4)
         silverValue = parseFloat(silverUSDResult * 3.67).toFixed(4)
@@ -145,8 +145,8 @@ async function fetchData1() {
         var silverHighValue = parseFloat(resultSilver.high_price);
 
 
-        goldBuy = (goldValue + bidSpread).toFixed(2);
-        goldSell = (goldValue + askSpread + parseFloat(0.5)).toFixed(2);
+        goldBuy = (goldValueUSD + bidSpread).toFixed(2);
+        goldSell = (goldValueUSD + askSpread + parseFloat(0.5)).toFixed(2);
         silverBuy = (silverValueUSD + silverBidSpread).toFixed(3);
         silverSell = (silverValueUSD + silverAskSpread + parseFloat(0.05)).toFixed(3);
 
@@ -282,7 +282,7 @@ async function fetchData1() {
 
 
 function setGoldValue(value){
-    goldValue = value;
+    goldValueUSD = value;
 }
 
 
