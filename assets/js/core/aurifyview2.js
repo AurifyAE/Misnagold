@@ -4,12 +4,13 @@ import { app } from '../../../config/db.js';
 
 const firestore = getFirestore(app)
 
-setInterval(fetchData, 500);
+setInterval(fetchData1, 500);
 
 // setInterval(() => {
 //     blinker()
 // }, 500)
 
+fetchData()
 showTable();
 
 
@@ -18,8 +19,92 @@ let askSpread, bidSpread, goldValue, silverBidSpread, silverAskSpread, goldBuy, 
 // Gold API KEY
 const API_KEY = 'goldapi-fbqpmirloto20zi-io'
 
-// Function to Fetch Gold API Data
 async function fetchData() {
+    console.log('koiiii');
+    let token = 'eyJhbGciOiJSUzUxMiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIyMTlmN2Y0ZTQ2MjgzNmVhN2IyMGRlMjI5MWZhYWFiOSIsInBlcm1pc3Npb25zIjpbXSwiYWNjZXNzUnVsZXMiOlt7ImlkIjoidHJhZGluZy1hY2NvdW50LW1hbmFnZW1lbnQtYXBpIiwibWV0aG9kcyI6WyJ0cmFkaW5nLWFjY291bnQtbWFuYWdlbWVudC1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6NTI4MmZjZTEtMmU5OS00ODVkLWFiNWUtMzYwN2M5YmQ1NDAwIl19LHsiaWQiOiJtZXRhYXBpLXJlc3QtYXBpIiwibWV0aG9kcyI6WyJtZXRhYXBpLWFwaTpyZXN0OnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo1MjgyZmNlMS0yZTk5LTQ4NWQtYWI1ZS0zNjA3YzliZDU0MDAiXX0seyJpZCI6Im1ldGFhcGktcnBjLWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6d3M6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjUyODJmY2UxLTJlOTktNDg1ZC1hYjVlLTM2MDdjOWJkNTQwMCJdfSx7ImlkIjoibWV0YWFwaS1yZWFsLXRpbWUtc3RyZWFtaW5nLWFwaSIsIm1ldGhvZHMiOlsibWV0YWFwaS1hcGk6d3M6cHVibGljOio6KiJdLCJyb2xlcyI6WyJyZWFkZXIiLCJ3cml0ZXIiXSwicmVzb3VyY2VzIjpbImFjY291bnQ6JFVTRVJfSUQkOjUyODJmY2UxLTJlOTktNDg1ZC1hYjVlLTM2MDdjOWJkNTQwMCJdfSx7ImlkIjoibWV0YXN0YXRzLWFwaSIsIm1ldGhvZHMiOlsibWV0YXN0YXRzLWFwaTpyZXN0OnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo1MjgyZmNlMS0yZTk5LTQ4NWQtYWI1ZS0zNjA3YzliZDU0MDAiXX0seyJpZCI6InJpc2stbWFuYWdlbWVudC1hcGkiLCJtZXRob2RzIjpbInJpc2stbWFuYWdlbWVudC1hcGk6cmVzdDpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6NTI4MmZjZTEtMmU5OS00ODVkLWFiNWUtMzYwN2M5YmQ1NDAwIl19LHsiaWQiOiJtZXRhYXBpLXJlYWwtdGltZS1zdHJlYW1pbmctYXBpIiwibWV0aG9kcyI6WyJtZXRhYXBpLWFwaTp3czpwdWJsaWM6KjoqIl0sInJvbGVzIjpbInJlYWRlciIsIndyaXRlciJdLCJyZXNvdXJjZXMiOlsiYWNjb3VudDokVVNFUl9JRCQ6NTI4MmZjZTEtMmU5OS00ODVkLWFiNWUtMzYwN2M5YmQ1NDAwIl19LHsiaWQiOiJjb3B5ZmFjdG9yeS1hcGkiLCJtZXRob2RzIjpbImNvcHlmYWN0b3J5LWFwaTpyZXN0OnB1YmxpYzoqOioiXSwicm9sZXMiOlsicmVhZGVyIiwid3JpdGVyIl0sInJlc291cmNlcyI6WyJhY2NvdW50OiRVU0VSX0lEJDo1MjgyZmNlMS0yZTk5LTQ4NWQtYWI1ZS0zNjA3YzliZDU0MDAiXX1dLCJ0b2tlbklkIjoiMjAyMTAyMTMiLCJpbXBlcnNvbmF0ZWQiOmZhbHNlLCJyZWFsVXNlcklkIjoiMjE5ZjdmNGU0NjI4MzZlYTdiMjBkZTIyOTFmYWFhYjkiLCJpYXQiOjE3MDg0MzMxMjcsImV4cCI6MTcxMTAyNTEyN30.euCuQ7Tl-9g7ztbM-8M_iyasWvyHm41OziMwmJ3sKA875MKn5-aCSAWahCH0QB-grCqbKENcL9DfH01eFXdzQkrLJ2WDIgjmX1pk0I1IKOJN_jRqO-suPNXOEXDzJ3eVT9kXrcxqJJYRTo30GiymmmXkX2YTYNCecODvb70Zc08qujhQV_x7a2IQUIQdM3flTl__n7Omzm02cGAvdq_LtixQXGGLTLfDrOkuLxR9DQo_un0Ua58cPKyaHQ9K99dH0pkQ0ZVI4rokddGxzPqXx4Bz64QvHeOiplcPq7QoIL0RRfJBUt_EnRmBOQPVkh9YHima-7jBzRNQm-rKrndTDkQu6SeFv2BbXMPsV3tYcfsZpVZPsRz4S27ec-65AD_ryS2iZFPOufnEjpjSjDlKd7EVhrEgTZ1ibXH7KN5R9vakKayyLU005L4elUxXSpPvhG02qnJa9NKTxzDH5HMJ3kcLxIq4VGIekDGCYa2I5LIRdV8TGqCQ9drpQMvZVwwmr3afuVwoK8sjVgt9Mgn3AjmHJ-l3yS8yGEVXNSmu1ux-tdVMoF2MJD5gBx8_5BlOyQZpssyWNdrq_jDgEe6KnsqztJoEWgctx2WKyjJIKqcYnnp7-a2FZx6uqDCDzVkjZ4fYHZ9dFOFkKdaLXBgBOeaWzVpxGoL-GQlgAaNFZUQ';
+    let accountId = '5282fce1-2e99-485d-ab5e-3607c9bd5400';
+    const api = new MetaApi.default(token);
+
+    async function getRealTimeBidAskPrices() {
+        try {
+            const account = await api.metatraderAccountApi.getAccount(accountId);
+            const initialState = account.state;
+            const deployedStates = ['DEPLOYING', 'DEPLOYED'];
+
+            if (!deployedStates.includes(initialState)) {
+                // wait until account is deployed and connected to broker
+                // console.log('Deploying account');
+                await account.deploy();
+            }
+            // console.log('Waiting for API server to connect to broker (may take a couple of minutes)');
+            await account.waitConnected();
+
+            // connect to MetaApi API
+            let connection = account.getStreamingConnection();
+            await connection.connect();
+
+            // wait until terminal state synchronized to the local state
+            // console.log('Waiting for SDK to synchronize to terminal state (may take some time depending on your history size)');
+            await connection.waitSynchronized();
+
+
+            // Subscribe to real-time market data for XAUUSD.fix (gold) and XAGUSD.fix (silver)
+            await connection.subscribeToMarketData('XAUUSD.fix', [{ type: 'quotes' }]);
+            // await connection.subscribeToMarketData('XAGUSD.fix', [{ type: 'quotes' }]);
+
+            // Access terminal state
+            let terminalState = connection.terminalState;
+
+            // let silverPrice = null;
+
+            connection.addSynchronizationListener({
+                async onSymbolPriceUpdated(instanceIndex, price) {
+                    if (price.symbol === 'XAUUSD.fix' || price.symbol === 'XAGUSD.fix') {
+                        console.log(`Real-time Bid and Ask Prices for ${price.symbol}:`, price);
+
+                        const bidPrice = price.bid;
+                        console.log('Bid Price:', bidPrice);
+
+                        if (price.symbol === 'XAUUSD.fix') {
+                            // Update gold price
+                            setGoldValue(bidPrice)
+                            // ... (other gold-related logic)
+                        } else if (price.symbol === 'XAGUSD.fix') {
+                            // Update silver price
+                            // silverPrice = bidPrice;
+                            // ... (other silver-related logic)
+                        }
+
+                        // Check if both gold and silver prices are available
+                        if (goldPrice !== null && silverPrice !== null) {
+                            // Perform actions that require both gold and silver data
+                            console.log('Both gold and silver prices are available:', goldPrice, silverPrice);
+                        }
+                    }
+                },
+            });
+
+            // Keep the script running to receive real-time updates
+            // console.log('Listening for real-time updates. Press Ctrl+C to exit.');
+            await new Promise(() => { });
+
+            // Close the connection if the account was undeployed
+            if (!deployedStates.includes(initialState)) {
+                // console.log('Undeploying account');
+                await connection.close();
+                await account.undeploy();
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    getRealTimeBidAskPrices();
+}
+
+
+// Function to Fetch Gold API Data
+async function fetchData1() {
     var myHeaders = new Headers();
     myHeaders.append("x-access-token", API_KEY);
     myHeaders.append("Content-Type", "application/json");
@@ -42,14 +127,14 @@ async function fetchData() {
         const resultSilver = await responseSilver.json();
 
         // Adjust based on the actual API response structure
-        var goldValueUSD = parseFloat(resultGold.price);
+        // var goldValueUSD = parseFloat(resultGold.price);
         var silverValueUSD = parseFloat(resultSilver.price)
 
-        document.getElementById('goldRate').textContent = '$' + goldValueUSD.toFixed(2);
+        document.getElementById('goldRate').textContent = '$' + goldValue.toFixed(2);
         document.getElementById('silverRate').textContent = '$' + silverValueUSD.toFixed(3);
 
-        var GoldUSDResult = (goldValueUSD / 31.1035).toFixed(4);
-        goldValue = (GoldUSDResult * 3.67).toFixed(4);
+        // var GoldUSDResult = (goldValueUSD / 31.1035).toFixed(4);
+        // goldValue = (GoldUSDResult * 3.67).toFixed(4);
 
         var silverUSDResult = (silverValueUSD / 31.1035).toFixed(4)
         silverValue = parseFloat(silverUSDResult * 3.67).toFixed(4)
@@ -60,8 +145,8 @@ async function fetchData() {
         var silverHighValue = parseFloat(resultSilver.high_price);
 
 
-        goldBuy = (goldValueUSD + bidSpread).toFixed(2);
-        goldSell = (goldValueUSD + askSpread + parseFloat(0.5)).toFixed(2);
+        goldBuy = (goldValue + bidSpread).toFixed(2);
+        goldSell = (goldValue + askSpread + parseFloat(0.5)).toFixed(2);
         silverBuy = (silverValueUSD + silverBidSpread).toFixed(3);
         silverSell = (silverValueUSD + silverAskSpread + parseFloat(0.05)).toFixed(3);
 
@@ -194,6 +279,12 @@ async function fetchData() {
         console.error('Error fetching gold and silver values:', error);
     }
 }
+
+
+function setGoldValue(value){
+    goldValue = value;
+}
+
 
 // function blinker() {
 //     if (document.getElementById("goldInputLow")) {
