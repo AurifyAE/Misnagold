@@ -11,7 +11,7 @@ setInterval(fetchData1, 500);
 // }, 500)
 
 fetchData()
-showTable();
+showTable(); 
 
 
 let askSpread, bidSpread, goldValue, silverBidSpread, silverAskSpread, goldBuy, goldSell, silverBuy, silverSell, silverValue;
